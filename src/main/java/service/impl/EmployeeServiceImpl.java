@@ -37,7 +37,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeResponse> getAllEmployees() throws EmployeeException {
+
+
+        if (repository.findAll().isEmpty()) {
+            throw new EmployeeException("No data yet.");
+        }
+
         return repository.findAll().stream().map(mapper::toEmployeeResponse).toList();
+    }
+
+    @Override
+    public EmployeeResponse getEmployeeById(Long id) throws EmployeeException {
+        return repository.findAll().stream()
+                .filter(emp -> emp.getId().equals(id))
+                .map(mapper::toEmployeeResponse)
+                .findFirst().orElseThrow(() -> new EmployeeException("Employee not found"));
     }
 
 

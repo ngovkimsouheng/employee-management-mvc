@@ -20,7 +20,7 @@ public class App {
         EmployeeService service = new EmployeeServiceImpl(repository, mapper);
         EmployeeController controller = new EmployeeController(view, service);
 
-        controller.create();
+        controller.start();
 
     }
 }
