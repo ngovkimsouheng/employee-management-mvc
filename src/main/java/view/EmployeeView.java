@@ -28,12 +28,6 @@ public class EmployeeView {
 
         LocalDate hireDate = getDateTimeInput(scanner, "Input Hire Date :");
 
-//        String[] parts = hireDate.split("-");
-//        int year = Integer.parseInt(parts[0]);
-//        int month = Integer.parseInt(parts[1]);
-//        int dateOfMonth = Integer.parseInt(parts[2]);
-//
-//        LocalDate hire = LocalDate.of(year, month, dateOfMonth);
         return new EmployeeCreateRequest(firstName, lastName, salary, hireDate);
 
     }
@@ -52,24 +46,36 @@ public class EmployeeView {
     }
 
     //method for handling number input
-    public Double getDoubleInput(Scanner sc, String conetext) {
+    public Double getDoubleInput(Scanner sc, String context) {
+
         while (true) {
-            System.out.print(
-                    conetext
-            );
+
+            System.out.print(context);
+
             try {
 
-                double salary = Double.parseDouble(sc.nextLine());
-                if (salary < 0) {
-                    System.out.println("Salary cannot be negative");
+                String input = sc.nextLine();
+
+                // check starts with 0
+                if (input.startsWith("0") && input.length() > 1 && input.charAt(1) != '.') {
+                    System.out.println("Salary cannot start with 0.");
                     continue;
                 }
+
+                double salary = Double.parseDouble(input);
+
+                // check negative or zero
+                if (salary <= 0) {
+                    System.out.println("Salary must be greater than 0.");
+                    continue;
+                }
+
                 return salary;
 
             } catch (NumberFormatException e) {
-                System.out.println(
-                        "Invalid Double value . Try again"
-                );
+
+                System.out.println("Invalid Double value. Try again.");
+
             }
         }
     }
@@ -94,7 +100,6 @@ public class EmployeeView {
     }
 
     //method for handling
-
 
     public void displayEmployeeResponse(EmployeeResponse response, String context) {
 
@@ -151,18 +156,40 @@ public class EmployeeView {
                 5.Delete Employee
                 0.Exit
                 """);
-        System.out.println("Choose an option 1-5");
+        System.out.print("Choose an option 1-5 :");
         return Integer.parseInt(scanner.nextLine());
     }
 
-
     public Long inputId() {
+
         while (true) {
-            System.out.println("Input Id :");
+
+            System.out.print("Input Id: ");
+
             try {
-               return Long.parseLong(scanner.nextLine());
+
+                String input = scanner.nextLine().trim();
+
+                // check empty
+                if (input.isEmpty()) {
+                    System.out.println("Id cannot be empty.");
+                    continue;
+                }
+
+                Long id = Long.parseLong(input);
+
+                // check zero or negative
+                if (id <= 0) {
+                    System.out.println("Id must be greater than 0.");
+                    continue;
+                }
+
+                return id;
+
             } catch (NumberFormatException e) {
-                System.out.println("Invalid id format. Please input number");
+
+                System.out.println("Invalid id format. Please input a valid number.");
+
             }
         }
     }

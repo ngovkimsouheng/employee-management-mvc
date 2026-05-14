@@ -31,12 +31,33 @@ public class EmployeeController {
         view.displayEmployeeResponse(response, "Created employee");
 //        System.out.println(request);
 
-        System.out.println(response);
+//        System.out.println(response);
 
 
     }
 
     public void update() {
+
+        Long id = view.inputId();
+
+        try {
+
+            // check if employee exists first
+            service.getEmployeeById(id);
+
+            // only ask for new data if employee exists
+            EmployeeCreateRequest request = view.createEmployee();
+
+            EmployeeResponse response =
+                    service.updateEmployeeById(id, request);
+
+            view.displayEmployeeResponse(response, "Updated Employee");
+
+        } catch (EmployeeException e) {
+
+            System.out.println(e.getMessage());
+
+        }
     }
 
     public void getAll() {
@@ -55,11 +76,28 @@ public class EmployeeController {
     }
 
     public void delete() {
+
+        Long id = view.inputId();
+
+        try {
+
+            EmployeeResponse response = service.deleteById(id);
+
+            view.displayEmployeeResponse(response, "Deleted Employee");
+
+        } catch (EmployeeException e) {
+
+            System.out.println(e.getMessage());
+        }
     }
 
     public void start() {
         while (true) {
             int option = view.showMenuAndGetOption();
+            if (option < 1 || option > 6) {
+                System.out.println("Invalid option! Please choose a correct option from 1 to 6.");
+                continue;
+            }
             switch (option) {
                 case 1 -> create();
                 case 2 -> update();

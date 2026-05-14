@@ -25,9 +25,16 @@ public class EmployeeRepository {
     }
 
 
-    // check trov ka ID , hx use mthod anyMatch  (shortcircirt)
+    // check trov ka ID , hx use mthod anyMatch  (shortcircuit)
     public boolean existsByID(Long id) {
         return employeeDb.data().stream().anyMatch(emp -> emp.getId().equals(id));
     }
 
+
+    //
+    public void deleteById(Long id) {
+
+        employeeDb.data().removeIf(emp -> emp.getId().equals(id));
+
+    }
 }

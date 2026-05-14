@@ -13,6 +13,11 @@ public interface EmployeeService {
 
     List<EmployeeResponse> getAllEmployees() throws EmployeeException;
 
-EmployeeResponse getEmployeeById(Long id) throws  EmployeeException;
+    EmployeeResponse getEmployeeById(Long id) throws EmployeeException;
+
+    EmployeeResponse updateEmployeeById(Long id, EmployeeCreateRequest request);
+
+    EmployeeResponse deleteById(Long id);
+
 
 }
