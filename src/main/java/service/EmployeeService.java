@@ -15,9 +15,9 @@ public interface EmployeeService {
 
     EmployeeResponse getEmployeeById(Long id) throws EmployeeException;
 
-    EmployeeResponse updateEmployeeById(Long id, EmployeeCreateRequest request);
+    EmployeeResponse updateEmployeeById(Long id, EmployeeCreateRequest request) throws EmployeeException;
 
-    EmployeeResponse deleteById(Long id);
+    EmployeeResponse deleteById(Long id) throws EmployeeException;
 
 
 }

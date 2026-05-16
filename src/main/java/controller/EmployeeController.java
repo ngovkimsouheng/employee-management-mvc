@@ -23,70 +23,60 @@ public class EmployeeController {
 
     public void create() {
 
-        EmployeeCreateRequest request = view.createEmployee();
-
-        EmployeeResponse response = service.createEmployeeResponse(request);
-
-
-        view.displayEmployeeResponse(response, "Created employee");
-//        System.out.println(request);
-
-//        System.out.println(response);
-
-
+        try {
+            EmployeeCreateRequest request = view.createEmployee();
+            EmployeeResponse response = service.createEmployeeResponse(request);
+            view.displayEmployeeResponse(response, "Created employee");
+        } catch (EmployeeException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void update() {
 
-        Long id = view.inputId();
-
         try {
+            Long id = view.inputId();
 
             // check if employee exists first
             service.getEmployeeById(id);
 
             // only ask for new data if employee exists
-            EmployeeCreateRequest request = view.createEmployee();
-
-            EmployeeResponse response =
-                    service.updateEmployeeById(id, request);
+            EmployeeCreateRequest request = view.updateEmployee();
+            EmployeeResponse response = service.updateEmployeeById(id, request);
 
             view.displayEmployeeResponse(response, "Updated Employee");
 
         } catch (EmployeeException e) {
-
             System.out.println(e.getMessage());
-
         }
     }
 
     public void getAll() {
 
-        //call employeelist and add it into table
-
-//        List<EmployeeResponse> responseList = service.getAllEmployees();
-//        view.displayEmployeeResponse(responseList);
-        view.displayTableEmployee(service.getAllEmployees());
+        try {
+            view.displayTableEmployee(service.getAllEmployees());
+        } catch (EmployeeException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void getById() {
-        Long id = view.inputId();
-        EmployeeResponse response = service.getEmployeeById(id);
-        view.displayEmployeeResponse(response, "Employee Details");
+        try {
+            Long id = view.inputId();
+            EmployeeResponse response = service.getEmployeeById(id);
+            view.displayEmployeeResponse(response, "Employee Details");
+        } catch (EmployeeException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void delete() {
 
-        Long id = view.inputId();
-
         try {
-
+            Long id = view.inputId();
             EmployeeResponse response = service.deleteById(id);
-
             view.displayEmployeeResponse(response, "Deleted Employee");
-
         } catch (EmployeeException e) {
-
             System.out.println(e.getMessage());
         }
     }
@@ -102,15 +92,7 @@ public class EmployeeController {
                 case 1 -> create();
                 case 2 -> update();
                 case 3 -> getAll();
-                case 4 -> {
-                    try {
-                        getById();
-                    } catch (EmployeeException e) {
-                        System.out.println(
-                                "Info" + e.getMessage()
-                        );
-                    }
-                }
+                case 4 -> getById();
                 case 5 -> delete();
                 default -> System.out.println("Exiting...");
             }

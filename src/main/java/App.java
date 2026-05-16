@@ -15,8 +15,8 @@ public class App {
         EmployeeView view = new EmployeeView();
 
         EmployeeMapper mapper = new EmployeeMapper();
-        EmployeeDb db = new EmployeeDb();
-        EmployeeRepository repository = new EmployeeRepository(db);
+//        EmployeeDb db = new EmployeeDb();
+        EmployeeRepository repository = new EmployeeRepository();
         EmployeeService service = new EmployeeServiceImpl(repository, mapper);
         EmployeeController controller = new EmployeeController(view, service);
 

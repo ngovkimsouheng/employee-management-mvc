@@ -19,7 +19,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeMapper mapper;
 
 
-    //??
+
     public EmployeeServiceImpl(EmployeeRepository repository, EmployeeMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;
@@ -48,12 +48,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponse getEmployeeById(Long id) throws EmployeeException {
-        return repository.findAll().stream().filter(emp -> emp.getId().equals(id)).map(mapper::toEmployeeResponse).findFirst().orElseThrow(() -> new EmployeeException("Employee not found"));
+        Employee employee = repository.findById(id);
+        return mapper.toEmployeeResponse(employee);
     }
 
 
     @Override
-    public EmployeeResponse updateEmployeeById(Long id, EmployeeCreateRequest request) {
+    public EmployeeResponse updateEmployeeById(Long id, EmployeeCreateRequest request) throws EmployeeException {
 
         if (id == null) {
             throw new EmployeeException("Employee id cannot be null");
@@ -67,37 +68,21 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new EmployeeException("Salary must be greater than 0");
         }
 
-        Employee employee = repository.findAll()
-                .stream()
-                .filter(emp -> emp.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() ->
-                        new EmployeeException("Employee not found with id: " + id)
-                );
+        Employee employee = mapper.fromEmployeeCreateRequest(request);
+        employee.setId(id);
 
-        // update existing object
-        employee.setFirstName(request.firstName());
-        employee.setLastName(request.lastName());
-        employee.setSalary(request.salary());
-        employee.setHireDate(request.hireDate());
+        Employee updatedEmployee = repository.update(id, employee);
 
-        // DO NOT save again
-
-        return mapper.toEmployeeResponse(employee);
+        return mapper.toEmployeeResponse(updatedEmployee);
     }
 
     @Override
-    public EmployeeResponse deleteById(Long id) {
-        Employee employee = repository.findAll()
-                .stream()
-                .filter(emp -> emp.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() ->
-                        new EmployeeException("Employee not found with id: " + id)
-                );
+    public EmployeeResponse deleteById(Long id) throws EmployeeException {
+
+        Employee employee = repository.findById(id);
 
         repository.deleteById(id);
-
+        
         return mapper.toEmployeeResponse(employee);
     }
 

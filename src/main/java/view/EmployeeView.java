@@ -32,6 +32,24 @@ public class EmployeeView {
 
     }
 
+    public EmployeeCreateRequest updateEmployee() {
+
+
+        System.out.println("=== [[Employee Update ]] ===");
+        String firstName = getStringInput(scanner, "Input FirstName : ");
+
+        String lastName = getStringInput(scanner, "Input LastName :");
+
+        Double salary = getDoubleInput(scanner, "Input Salary :");
+
+        LocalDate hireDate = getDateTimeInput(scanner, "Input Hire Date :");
+
+        return new EmployeeCreateRequest(firstName, lastName, salary, hireDate);
+
+    }
+
+
+
     //method for handling mismatch input from user
     public String getStringInput(Scanner sc, String context) { //context use to make the message dynamic
         while (true) {
@@ -156,8 +174,25 @@ public class EmployeeView {
                 5.Delete Employee
                 0.Exit
                 """);
-        System.out.print("Choose an option 1-5 :");
-        return Integer.parseInt(scanner.nextLine());
+        while (true) {
+            System.out.print("Choose an option (0-5): ");
+            String input = scanner.nextLine().trim();
+            if (input.isEmpty()) {
+                System.out.println("Option cannot be empty. Try again.");
+                continue;
+            }
+
+            try {
+                int option = Integer.parseInt(input);
+                if (option < 0 || option > 5) {
+                    System.out.println("Invalid option. Please choose a number between 0 and 5.");
+                    continue;
+                }
+                return option;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number between 0 and 5.");
+            }
+        }
     }
 
     public Long inputId() {

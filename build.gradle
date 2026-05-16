@@ -17,8 +17,12 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.42'
     annotationProcessor 'org.projectlombok:lombok:1.18.42'
 
-// Source: https://mvnrepository.com/artifact/org.nocrala.tools.texttablefmt/text-table-formatter
+    // Source: https://mvnrepository.com/artifact/org.nocrala.tools.texttablefmt/text-table-formatter
     implementation 'org.nocrala.tools.texttablefmt:text-table-formatter:1.2.4'
+
+    // Source: https://mvnrepository.com/artifact/org.postgresql/postgresql
+    implementation 'org.postgresql:postgresql:42.7.11'
+
 
 }
 
